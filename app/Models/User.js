@@ -21,12 +21,41 @@ class User extends Model {
     })
   }
 
+  teamJoins () {
+    return this.hasMany('App/Models/UserTeam')
+  }
+
   tokens () {
     return this.hasMany('App/Models/Token')
   }
 
   teams () {
     return this.belongsToMany('App/Models/Team').pivotModel('App/Models/UserTeam')
+  }
+
+  // Check if user belongs to any role
+  async is (expression) {
+    const team = await this.teamJoins()
+      .where('team_id', this.currentTeam)
+      .first()
+
+    return team.is(expression)
+  }
+
+  async can (expression) {
+    const team = await this.teamJoins()
+      .where('team_id', this.currentTeam)
+      .first()
+
+    return team.is(expression)
+  }
+
+  async scope (required) {
+    const team = await this.teamJoins()
+      .where('team_id', this.currentTeam)
+      .first()
+
+    return team.is(required)
   }
 }
 
