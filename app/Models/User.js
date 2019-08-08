@@ -47,7 +47,7 @@ class User extends Model {
       .where('team_id', this.currentTeam)
       .first()
 
-    return team.is(expression)
+    return team.can(expression)
   }
 
   async scope (required) {
@@ -55,7 +55,7 @@ class User extends Model {
       .where('team_id', this.currentTeam)
       .first()
 
-    return team.is(required)
+    return team.scope(required)
   }
 }
 
